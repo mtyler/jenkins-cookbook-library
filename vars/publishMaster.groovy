@@ -30,7 +30,7 @@ def call(String cookbookName){
     //    script: "sed -n -e '/^name/p' metadata.rb | sed 's/^name*//g;s/^[[:space:]]*//g' | sed \"s/'//g\"",
     //    returnStdout: true
     //  ).trim()
-      COOKBOOK_NAME= cookbookName
+      COOKBOOK_NAME= cookbookName.trim()
       COOKBOOK_DIR= sh (
         script: "printf '%s' \"cookbooks/${COOKBOOK_NAME}\"",
         returnStdout: true
