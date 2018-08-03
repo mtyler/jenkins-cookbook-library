@@ -8,7 +8,9 @@ def call(String cookbookName){
 //
 // This requires the environment variables $KNIFE_RB, $CLIENT_KEY and $CHEF_SERVER_ADD_HOST
 // be set on the jenkinsci/blueocean container or the derived container
-// KNIFE_RB
+// KNIFE_RB is the knife.rb configuration typically found in ~/.chef
+// CLIENT_KEY is the client.pem typically found in ~/.chef
+// CHEF_SERVER_ADD_HOST is the etc/hosts file entry formatted for the docker --add-host arg
   pipeline {
     environment {
       // client and knife are setup this way because docker inside docker
@@ -105,8 +107,8 @@ def call(String cookbookName){
           //configure knife and publish
           sh """
             mkdir -p /root/.chef
-            printf '%s\n' '${env.CLIENT_KEY}' > /root/.chef/cicdsvc.pem
-            printf '%s\n' '${env.KNIFE_RB}' > /root/.chef/knife.rb
+            printf '%s\n' '${env.client_key}' > /root/.chef/cicdsvc.pem
+            printf '%s\n' '${env.knife_rb}' > /root/.chef/knife.rb
             knife ssl fetch -c /root/.chef/knife.rb
             knife cookbook upload ${env.COOKBOOK_NAME} --cookbook_path ./cookbooks -c /root/.chef/knife.rb --freeze
           """
