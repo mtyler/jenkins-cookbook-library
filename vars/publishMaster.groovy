@@ -30,6 +30,10 @@ def call(String cookbookName){
     //    script: "sed -n -e '/^name/p' metadata.rb | sed 's/^name*//g;s/^[[:space:]]*//g' | sed \"s/'//g\"",
     //    returnStdout: true
     //  ).trim()
+      L_CHEF_SERVER_ADD_HOST= sh (
+        script: 'echo $CHEF_SERVER_ADD_HOST',
+        returnStout: true
+      ).trim()
       COOKBOOK_NAME= cookbookName.trim()
       COOKBOOK_DIR= sh (
         script: "printf '%s' \"cookbooks/${COOKBOOK_NAME}\"",
@@ -46,7 +50,7 @@ def call(String cookbookName){
         args "--net host \
               -u 0:0 \
               --dns 192.168.1.1 \
-              --add-host ${CHEF_SERVER_ADD_HOST} \
+              --add-host ${L_CHEF_SERVER_ADD_HOST} \
               -v /var/run/docker.sock:/var/run/docker.sock"
 
       }
