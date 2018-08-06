@@ -17,11 +17,11 @@ def call(String cookbookName){
       // this is currently closely tied to the jenkinsci/blueocean container
       // docker build should copy the files to the container and set the vars
       client_key= sh (
-        script: 'cat $CLIENT_KEY',
+        script: "cat ${CLIENT_KEY}",
         returnStdout: true
       ).trim()
       knife_rb= sh (
-        script: 'cat $KNIFE_RB',
+        script: "cat ${KNIFE_RB}",
         returnStdout: true
       ).trim()
     // cookbook name is derived from metadata.rb and would need mod to include
@@ -30,10 +30,10 @@ def call(String cookbookName){
     //    script: "sed -n -e '/^name/p' metadata.rb | sed 's/^name*//g;s/^[[:space:]]*//g' | sed \"s/'//g\"",
     //    returnStdout: true
     //  ).trim()
-      CHEF_SERVER_ADD_HOST= sh (
-        script: 'echo $CHEF_SERVER_ADD_HOST',
-        returnStout: true
-      ).trim()
+    //  CHEF_SERVER_ADD_HOST= sh (
+    //    script: 'echo $CHEF_SERVER_ADD_HOST',
+  //      returnStout: true
+//      ).trim()
       COOKBOOK_NAME= cookbookName.trim()
       COOKBOOK_DIR= sh (
         script: "printf '%s' \"cookbooks/${COOKBOOK_NAME}\"",
