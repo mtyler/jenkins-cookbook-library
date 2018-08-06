@@ -50,7 +50,7 @@ def call(String cookbookName){
         args "--net host \
               -u 0:0 \
               --dns 192.168.1.1 \
-              --add-host \"\$(echo \$CHEF_SERVER_ADD_HOST)\" \
+              --add-host \"\$CHEF_SERVER_ADD_HOST\" \
               -v /var/run/docker.sock:/var/run/docker.sock"
 
       }
