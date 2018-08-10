@@ -11,7 +11,7 @@ def call(String cookbookName){
 // KNIFE_RB is the knife.rb configuration typically found in ~/.chef
 // CLIENT_KEY is the client.pem typically found in ~/.chef
 // CHEF_SERVER_ADD_HOST is the etc/hosts file entry formatted for the docker --add-host arg
-//removed pipeline {
+  pipeline {
     environment {
       // client and knife are setup this way because docker inside docker
       // this is currently closely tied to the jenkinsci/blueocean container
@@ -125,5 +125,5 @@ def call(String cookbookName){
         }
       }
     }
-//removed } //pipeline
+  } //pipeline
 }
