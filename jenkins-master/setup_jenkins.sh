@@ -2,8 +2,8 @@
 #if [ "x$WKDIR" = "x" ]; then
 #  export WKDIR=$PWD
 #fi
-MY_PATH="`dirname \"$0\"`"              # relative
-MY_PATH="`( cd \"$WKDIR\" && pwd )`"  # absolutized and normalized
+WKDIR="`dirname \"$0\"`"              # relative
+WKDIR="`( cd \"$WKDIR\" && pwd )`"  # absolutized and normalized
 if [ -z "$WKDIR" ] ; then
   exit 1
 fi
