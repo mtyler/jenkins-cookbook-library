@@ -6,9 +6,14 @@ A multi-purpose repo for testing and publishing cookbooks using Jenkins Docker c
 
 A Dockerfile and shell script to get everything going
 
+### TODO ./jenkins-builder
+
+need to bring Dockerfile from chef-infra-base
+
 ### ./Dockerfile & ./var
 
 The library to be included in a child cookbook repo
+
 
 ## Usage
 

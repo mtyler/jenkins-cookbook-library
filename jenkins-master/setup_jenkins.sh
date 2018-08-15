@@ -1,7 +1,14 @@
 #!/bin/bash
-if [ "x$WKDIR" = "x" ]; then
-  export WKDIR=$PWD
+#if [ "x$WKDIR" = "x" ]; then
+#  export WKDIR=$PWD
+#fi
+MY_PATH="`dirname \"$0\"`"              # relative
+MY_PATH="`( cd \"$WKDIR\" && pwd )`"  # absolutized and normalized
+if [ -z "$WKDIR" ] ; then
+  exit 1
 fi
+echo "$WKDIR"
+
 CI_CONTAINER_NAME="blueocean"
 CI_IMAGE="mtyler/blueocean"
 CONTAINER_VOLUME="jenkins-data"
