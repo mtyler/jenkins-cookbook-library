@@ -132,8 +132,8 @@ EOL
 #
 # copy knife and pem file to scripts to minimize the size of Docker build context
 #
-cp $WKDIR/.chef/$KNIFE_RB_FILE $BUILD_CONTEXT/$KNIFE_RB_FILE
-cp $WKDIR/.chef/$CLIENT_KEY_FILE $BUILD_CONTEXT/$CLIENT_KEY_FILE
+#cp $WKDIR/.chef/$KNIFE_RB_FILE $BUILD_CONTEXT/$KNIFE_RB_FILE
+#cp $WKDIR/.chef/$CLIENT_KEY_FILE $BUILD_CONTEXT/$CLIENT_KEY_FILE
 
 # ---------------------------------------------------------------------------
 # cleanup any previous images and volumes
