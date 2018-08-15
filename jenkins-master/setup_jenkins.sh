@@ -2,18 +2,17 @@
 #if [ "x$WKDIR" = "x" ]; then
 #  export WKDIR=$PWD
 #fi
-WKDIR="`dirname \"$0\"`"              # relative
-WKDIR="`( cd \"$WKDIR\" && pwd )`"  # absolutized and normalized
-if [ -z "$WKDIR" ] ; then
+BUILD_CONTEXT="`dirname \"$0\"`"              # relative
+BUILD_CONTEXT="`( cd \"$BUILD_CONTEXT\" && pwd )`"  # absolutized and normalized
+if [ -z "$BUILD_CONTEXT" ] ; then
   exit 1
 fi
-echo "$WKDIR"
+echo "$BUILD_CONTEXT"
 
 CI_CONTAINER_NAME="blueocean"
 CI_IMAGE="mtyler/blueocean"
 CONTAINER_VOLUME="jenkins-data"
 DOT_CHEF_DIR="/var/chef/.chef"
-BUILD_CONTEXT="/jenkins-master"
 JENKINS_HOME="/var/jenkins_home"
 ADMIN_USR="admin"
 ADMIN_PWD="nimda"
@@ -83,7 +82,7 @@ EOL
 ## java -jar jenkins-cli.jar -auth admin:nimda -s http://localhost:8080/ get-credentials-domain-as-xml user::user::admin blueocean-github-domain
 ##
 create_blueocean-github-domain() {
-    cat > $WKDIR$BUILD_CONTEXT/blueocean-github-domain.xml <<EOL
+    cat > $BUILD_CONTEXT/blueocean-github-domain.xml <<EOL
     <com.cloudbees.plugins.credentials.domains.Domain plugin="credentials@2.1.18">
       <name>blueocean-github-domain</name>
       <description>blueocean-github-domain to store credentials by BlueOcean</description>
@@ -95,7 +94,7 @@ EOL
 }
 
 create_github-credentials() {
-cat > $WKDIR$BUILD_CONTEXT/github-credentials.xml <<EOL
+cat > $BUILD_CONTEXT/github-credentials.xml <<EOL
       <com.cloudbees.plugins.credentials.impl.UsernamePasswordCredentialsImpl>
         <scope>USER</scope>
         <id>github</id>
@@ -110,19 +109,19 @@ EOL
 ## create files required for Docker build to copy to container
 ##
 create_last-exec-version() {
-    cat > $WKDIR$BUILD_CONTEXT/jenkins.install.InstallUtil.lastExecVersion <<EOL
+    cat > $BUILD_CONTEXT/jenkins.install.InstallUtil.lastExecVersion <<EOL
 2.121.2
 EOL
 }
 
 create_upgrade-wizard-state() {
-    cat > $WKDIR$BUILD_CONTEXT/jenkins.install.UpgradeWizard.state <<EOL
+    cat > $BUILD_CONTEXT/jenkins.install.UpgradeWizard.state <<EOL
 2.121.2
 EOL
 }
 
 create_location-configuration() {
-    cat > $WKDIR$BUILD_CONTEXT/jenkins.model.JenkinsLocationConfiguration.xml <<EOL
+    cat > $BUILD_CONTEXT/jenkins.model.JenkinsLocationConfiguration.xml <<EOL
 <?xml version='1.1' encoding='UTF-8'?>
 <jenkins.model.JenkinsLocationConfiguration>
  <jenkinsUrl>${JENKINS_URL}</jenkinsUrl>
@@ -133,8 +132,8 @@ EOL
 #
 # copy knife and pem file to scripts to minimize the size of Docker build context
 #
-cp $WKDIR/.chef/$KNIFE_RB_FILE $WKDIR$BUILD_CONTEXT/$KNIFE_RB_FILE
-cp $WKDIR/.chef/$CLIENT_KEY_FILE $WKDIR$BUILD_CONTEXT/$CLIENT_KEY_FILE
+cp $WKDIR/.chef/$KNIFE_RB_FILE $BUILD_CONTEXT/$KNIFE_RB_FILE
+cp $WKDIR/.chef/$CLIENT_KEY_FILE $BUILD_CONTEXT/$CLIENT_KEY_FILE
 
 # ---------------------------------------------------------------------------
 # cleanup any previous images and volumes
@@ -162,7 +161,7 @@ echo "calling docker build -t $CI_IMAGE"
 docker build -t $CI_IMAGE \
              --build-arg KNIFE_RB=$KNIFE_RB_FILE \
              --build-arg CLIENT_KEY=$CLIENT_KEY_FILE \
-             $WKDIR$BUILD_CONTEXT
+             $BUILD_CONTEXT
 
 if [ ! $? -eq 0 ]; then
   echo ""
