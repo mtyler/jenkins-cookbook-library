@@ -1,6 +1,14 @@
-# jenkins-cookbook-library
+# jenkins-cookbook-pipeline
 
-A Jenkins library for testing and publishing cookbooks using Jenkins Docker containers
+A multi-purpose repo for testing and publishing cookbooks using Jenkins Docker containers
+
+### ./jenkins-master
+
+A Dockerfile and shell script to get everything going
+
+### ./Dockerfile & ./var
+
+The library to be included in a child cookbook repo
 
 ## Usage
 
