@@ -1,24 +1,49 @@
 # jenkins-cookbook-pipeline
 
-A proof-of-concept, multi-purpose repo for testing and publishing cookbooks using Jenkins Docker containers
+A proof-of-concept, multi-purpose repo for testing and publishing cookbooks using Jenkins Docker containers.
 
-### ./jenkins-master
+In it's current form, this is best suited for creating a quick and dirty, on-the-fly, cookbook pipeline.  There are many things that would need to be addressed before porting any of this functionality to a production environment.
 
-A Dockerfile and shell script to get everything going
+## Known Issues
 
-### TODO ./jenkins-builder
+- The setup_jenkins.sh file is heavily dependent on very specific environment variables.
 
-need to bring Dockerfile from chef-infra-base
+## Jenkins Master setup files
 
-### ./Dockerfile & ./var
+- ./jenkins-master/*
 
-The library to be included in a child cookbook repo
+### Usage
 
+1. Add files to the jenkins-master directory. This is the Jenkins Master Docker build context and the following files are used to build the container
+  - jenkins-master/cicdsvc-knife.rb
+    A knife configuration file with the appropriate configuration for your environment
+  - jenkins-master/cicdsvc.pem
+    A client.pem key for the user specified in the knife.rb file
+  - jenkins-master/github-token
+    A [Github Access Token](https://help.github.com/articles/creating-a-personal-access-token-for-the-command-line/) with repo and user email access to the cookbook repo
 
-## Usage
+2. Run ./jenkins-master/setup_jenkins.sh
+  - Edit setup_jenkins.sh and set Environment variables appropriately
+
+## Jenkins Library
+
+This will run the bare bones basics of a cookbook pipeline.
+- Unit tests with chefspec
+- Linting with foodcritic and cookstyle
+- Functional tests with TestKitchen
+- Publishing to a Chef Server
+
+### Library files
+
+- ./vars/publishMaster.groovy
+- ./resources/Dockerfile (Jenkins Builder)
+  A Dockerfile for running a cookbook builder inside the jenkinsci/blueocean Jenkins container
+
+### Example Usage
 
 Example of the calling [Jenkinsfile](https://github.com/mtyler/chef-infra-base/blob/master/Jenkinsfile)
 
 ## More Jenkins Cookbook Libraries
-This library by James Massardo is a great, and provides more functionality.  Especially, if you are coordinating between OS & Apps teams and multiple BUs.
+
+This library by James Massardo is more robust and provides more functionality.  Especially, if you are coordinating between OS & Apps teams and multiple BUs.
 [https://github.com/jmassardo/Chef-Jenkins-Library](https://github.com/jmassardo/Chef-Jenkins-Library)
