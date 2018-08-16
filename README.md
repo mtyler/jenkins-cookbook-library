@@ -1,6 +1,6 @@
 # jenkins-cookbook-pipeline
 
-A multi-purpose repo for testing and publishing cookbooks using Jenkins Docker containers
+A proof-of-concept, multi-purpose repo for testing and publishing cookbooks using Jenkins Docker containers
 
 ### ./jenkins-master
 
