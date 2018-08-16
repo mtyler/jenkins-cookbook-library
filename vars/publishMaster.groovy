@@ -2,9 +2,9 @@ def COOKBOOK_NAME = 'noname'
 def COOKBOOK_DIR = 'nodir'
 def COOKBOOK_ARTIFACT = 'noartifact'
 
-def call(String cookbookName, String wkdir){
+def call(String cookbookName){
 
-  sh(writeFile file: wkdir + '/Dockerfile', text: libraryResource('Dockerfile'))
+  writeFile file: 'Dockerfile', text: libraryResource('Dockerfile')
 // This pipeline assumes that human approval happens through a PR
 // to master.
 //
