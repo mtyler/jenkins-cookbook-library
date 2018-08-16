@@ -7,6 +7,7 @@ In it's current form, this is best suited for creating a quick and dirty, on-the
 ## Known Issues
 
 - The setup_jenkins.sh file is heavily dependent on very specific environment variables.
+- The first run fails because something is going on with the path used to copy the libraryResource and the workspace where the initial indexing occurs  
 
 ## Jenkins Master setup files
 
