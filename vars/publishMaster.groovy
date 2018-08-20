@@ -4,7 +4,7 @@ def COOKBOOK_ARTIFACT = 'noartifact'
 
 def call(String cookbookName){
 
-  writeFile file: "${WORKSPACE}@Dockerfile/Dockerfile", text: libraryResource('Dockerfile')
+  writeFile file: "${WORKSPACE}/Dockerfile", text: libraryResource('Dockerfile')
 // This pipeline assumes that human approval happens through a PR
 // to master.
 //
@@ -45,7 +45,7 @@ def call(String cookbookName){
     agent {
       dockerfile {
         //filename 'Dockerfile'
-        filename "\"\${WORKSPACE}\"@Dockerfile/Dockerfile"
+        filename "\"\${WORKSPACE}\"/Dockerfile"
         args "--net host \
               -u 0:0 \
               --dns 192.168.1.1 \
