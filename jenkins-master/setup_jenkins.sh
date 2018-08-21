@@ -41,6 +41,9 @@ import jenkins.branch.BranchSource;
 import jenkins.branch.DefaultBranchPropertyStrategy;
 import jenkins.plugins.git.GitSCMSource;
 import org.jenkinsci.plugins.workflow.multibranch.WorkflowMultiBranchProject;
+import com.cloudbees.plugins.credentials.impl.*;
+import com.cloudbees.plugins.credentials.*;
+import com.cloudbees.plugins.credentials.domains.*;
 
 def out
 def config = new HashMap()
