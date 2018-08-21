@@ -64,7 +64,7 @@ strategy.setAllowAnonymousRead(false)
 instance.setAuthorizationStrategy(strategy)
 
 //-- begin add github access token
-Credentials c = (Credentials) new UsernamePasswordCredentialsImpl(CredentialsScope.GLOBAL,"github", "Github Access Token", "${ADMIN_USR}", "${GITHUB_TOKEN}")
+Credentials c = (Credentials) new UsernamePasswordCredentialsImpl(CredentialsScope.USER,"github", "Github Access Token", "${ADMIN_USR}", "${GITHUB_TOKEN}")
 SystemCredentialsProvider.getInstance().getStore().addCredentials(Domain.global(), c)
 //-- end add github access token
 
