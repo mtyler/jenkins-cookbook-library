@@ -60,6 +60,11 @@ def strategy = new FullControlOnceLoggedInAuthorizationStrategy()
 strategy.setAllowAnonymousRead(false)
 instance.setAuthorizationStrategy(strategy)
 
+//-- begin add github access token
+Credentials c = (Credentials) new UsernamePasswordCredentialsImpl(CredentialsScope.GLOBAL,"github", "Github Access Token", "${ADMIN_USR}", "${GITHUB_TOKEN}")
+SystemCredentialsProvider.getInstance().getStore().addCredentials(Domain.global(), c)
+//-- end add github access token
+
 //-- begin create project
 def source = new GitSCMSource(null, '${PROJECT_GIT_REMOTE}', "", "*", "", false)
 def mp = instance.createProject(WorkflowMultiBranchProject.class, '${JENKINS_PROJECT}')
@@ -69,7 +74,6 @@ out.println "--> build scheduled"
 //-- end create project
 
 instance.save()
-
 out.println "--> instance saved"
 EOL
 }
@@ -236,14 +240,18 @@ sleep 3
 ##  curl -v -u admin:admin -d '{"accessToken": boo"}' -H "Content-Type:application/json" -XPUT http://localhost:8080/jenkins/blue/rest/organizations/jenkins/scm/github/validate
 ## from: https://github.com/jenkinsci/blueocean-plugin/tree/master/blueocean-rest#multibranch-pipeline-api
 ## curl -v -u $ADMIN_USR:$ADMIN_PWD -d '{"accessToken": "$GITHUB_TOKEN"}' -H "Content-Type:application/json" -XPUT http://localhost:8080/jenkins/blue/rest/organizations/jenkins/scm/github/validate
-      create_github-credentials
-      create_blueocean-github-domain
-      java -jar ./jenkins-cli.jar -s $JENKINS_URL who-am-i --username $ADMIN_USR --password $ADMIN_PWD
-      if [ $? -eq 0 ]; then echo "Connections successful!"; fi
-      java -jar ./jenkins-cli.jar -auth $ADMIN_USR:$ADMIN_PWD -s $JENKINS_URL create-credentials-domain-by-xml user::user::$ADMIN_USR < $BUILD_CONTEXT/blueocean-github-domain.xml
-      if [ $? -eq 0 ]; then echo "Domain created!"; fi
-      java -jar ./jenkins-cli.jar -auth $ADMIN_USR:$ADMIN_PWD -s $JENKINS_URL create-credentials-by-xml user::user::$ADMIN_USR blueocean-github-domain < $BUILD_CONTEXT/github-credentials.xml
-      if [ $? -eq 0 ]; then echo "Github Access Token added!"; fi
+
+
+#      create_github-credentials
+#      create_blueocean-github-domain
+#      java -jar ./jenkins-cli.jar -s $JENKINS_URL who-am-i --username $ADMIN_USR --password $ADMIN_PWD
+#      if [ $? -eq 0 ]; then echo "Connections successful!"; fi
+#      java -jar ./jenkins-cli.jar -auth $ADMIN_USR:$ADMIN_PWD -s $JENKINS_URL create-credentials-domain-by-xml user::user::$ADMIN_USR < $BUILD_CONTEXT/blueocean-github-domain.xml
+#      if [ $? -eq 0 ]; then echo "Domain created!"; fi
+#      java -jar ./jenkins-cli.jar -auth $ADMIN_USR:$ADMIN_PWD -s $JENKINS_URL create-credentials-by-xml user::user::$ADMIN_USR blueocean-github-domain < $BUILD_CONTEXT/github-credentials.xml
+#      if [ $? -eq 0 ]; then echo "Github Access Token added!"; fi
+
+
       ##
       ## End creating github access token
       ## ----------------------------------------------------------------------
