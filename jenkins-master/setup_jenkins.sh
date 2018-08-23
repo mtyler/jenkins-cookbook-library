@@ -226,6 +226,7 @@ while true; do
     echo "..."
     sleep 3
   else
+    sleep 10
     ## retry until jenkins-cli is available
 #    while true; do
 #      curl --fail $JENKINS_URL/jnlpJars/jenkins-cli.jar --output jenkins-cli.jar 2>&1 \
