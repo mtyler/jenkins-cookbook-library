@@ -4,7 +4,7 @@ def COOKBOOK_ARTIFACT = 'noartifact'
 
 def call(String cookbookName){
 
-  writeFile file: 'Dockerfile', text: libraryResource('Dockerfile')
+  writeFile file: "${WORKSPACE}@${SHLVL}/Dockerfile", text: libraryResource('Dockerfile')
 // This pipeline assumes that human approval happens through a PR
 // to master.
 //
@@ -44,10 +44,6 @@ def call(String cookbookName){
     }
     agent {
       dockerfile {
-        //filename 'Dockerfile'
-        //no-worky "\"\${WORKSPACE}\"/Dockerfile" = /"${WORKSPACE}"/Dockerfile
-        //no-worky "\${WORKSPACE}/Dockerfile" = /"${WORKSPACE}/Dockerfile
-        //no-worky "\$WORKSPACE/Dockerfile" = /$WORKSPACE/Dockerfile
         //filename is relative to $WORKSPACE + whatever suffix is used
         filename 'Dockerfile'
         args "--net host \
