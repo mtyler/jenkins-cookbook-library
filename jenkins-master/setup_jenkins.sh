@@ -117,13 +117,13 @@ EOL
 ##
 create_last-exec-version() {
     cat > $BUILD_CONTEXT/jenkins.install.InstallUtil.lastExecVersion <<EOL
-2.121.2
+2.121.3
 EOL
 }
 
 create_upgrade-wizard-state() {
     cat > $BUILD_CONTEXT/jenkins.install.UpgradeWizard.state <<EOL
-2.121.2
+2.121.3
 EOL
 }
 
