@@ -268,10 +268,10 @@ fi
       ## ----------------------------------------------------------------------
 
 #    fi
-    echo "Jenkins started on $JENKINS_URL"
-    echo "Startup credentials user: $ADMIN_USR pwd: $ADMIN_PWD"
+echo "Jenkins started on $JENKINS_URL"
+echo "Startup credentials user: $ADMIN_USR pwd: $ADMIN_PWD"
 #    break
 #  fi
-done
+#done
 
 exit 0
