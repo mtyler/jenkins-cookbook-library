@@ -3,7 +3,8 @@ def COOKBOOK_DIR = 'nodir'
 def COOKBOOK_ARTIFACT = 'noartifact'
 
 def call(String cookbookName){
-
+  // It's not clear where jenkins is getting the @2 suffix from.  Additionally,
+  // this appears to fail on the first pass
   writeFile file: "${WORKSPACE}@2/Dockerfile", text: libraryResource('Dockerfile')
 // This pipeline assumes that human approval happens through a PR
 // to master.
@@ -48,10 +49,14 @@ def call(String cookbookName){
         filename 'Dockerfile'
         args "--net host \
               -u 0:0 \
-              --dns 192.168.1.1 \
               --add-host \"\$CHEF_SERVER_ADD_HOST\" \
               -v /var/run/docker.sock:/var/run/docker.sock"
-
+              //filename 'Dockerfile'
+              //args "--net host \
+            //        -u 0:0 \
+              //      --dns 192.168.1.1 \
+              //      --add-host \"\$CHEF_SERVER_ADD_HOST\" \
+              //      -v /var/run/docker.sock:/var/run/docker.sock"
       }
     }
 //  options {
