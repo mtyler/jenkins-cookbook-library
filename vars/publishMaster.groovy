@@ -4,7 +4,7 @@ def COOKBOOK_ARTIFACT = 'noartifact'
 
 def call(String cookbookName){
 
-  writeFile file: "${WORKSPACE}@${SHLVL}/Dockerfile", text: libraryResource('Dockerfile')
+  writeFile file: "${WORKSPACE}@2/Dockerfile", text: libraryResource('Dockerfile')
 // This pipeline assumes that human approval happens through a PR
 // to master.
 //
