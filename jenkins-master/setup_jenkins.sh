@@ -219,13 +219,13 @@ if [ $? -ne 0 ]; then
   exit 1
 fi
 
-#while true; do
+while true; do
   # wait for service to be available
   ### if [ "$(curl -v --silent http://localhost:8080 2>&1 | grep 'Authentication required')" = "Authentication required" ]; then
-#  if [ "$(curl -v --silent $JENKINS_URL 2>&1 | grep 'Connected to localhost')" = "Connected to localhost" ]; then
-#    echo "..."
-#    sleep 3
-#  else
+  if [ "$(curl -v --silent $JENKINS_URL 2>&1 | grep 'Connected to localhost')" = "Connected to localhost" ]; then
+    echo "..."
+    sleep 3
+  else
     ## retry until jenkins-cli is available
 #    while true; do
 #      curl --fail $JENKINS_URL/jnlpJars/jenkins-cli.jar --output jenkins-cli.jar 2>&1 \
@@ -268,10 +268,10 @@ fi
       ## ----------------------------------------------------------------------
 
 #    fi
-echo "Jenkins started on $JENKINS_URL"
-echo "Startup credentials user: $ADMIN_USR pwd: $ADMIN_PWD"
-#    break
-#  fi
-#done
+    echo "Jenkins started on $JENKINS_URL"
+    echo "Startup credentials user: $ADMIN_USR pwd: $ADMIN_PWD"
+    break
+  fi
+done
 
 exit 0

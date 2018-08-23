@@ -48,7 +48,7 @@ def call(String cookbookName){
         //no-worky "\"\${WORKSPACE}\"/Dockerfile" = /"${WORKSPACE}"/Dockerfile
         //no-worky "\${WORKSPACE}/Dockerfile" = /"${WORKSPACE}/Dockerfile
         //no-worky "\$WORKSPACE/Dockerfile" = /$WORKSPACE/Dockerfile
-        filename \"\$WORKSPACE\"/Dockerfile
+        filename '$WORKSPACE/Dockerfile'
         args "--net host \
               -u 0:0 \
               --dns 192.168.1.1 \
