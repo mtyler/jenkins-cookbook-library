@@ -4,7 +4,7 @@ def COOKBOOK_ARTIFACT = 'noartifact'
 
 def call(String cookbookName){
 
-  writeFile file: "${WORKSPACE}/Dockerfile", text: libraryResource('Dockerfile')
+  writeFile file: "${WORKSPACE}@${EXECUTOR_NUMBER}/Dockerfile", text: libraryResource('Dockerfile')
 // This pipeline assumes that human approval happens through a PR
 // to master.
 //
@@ -48,7 +48,8 @@ def call(String cookbookName){
         //no-worky "\"\${WORKSPACE}\"/Dockerfile" = /"${WORKSPACE}"/Dockerfile
         //no-worky "\${WORKSPACE}/Dockerfile" = /"${WORKSPACE}/Dockerfile
         //no-worky "\$WORKSPACE/Dockerfile" = /$WORKSPACE/Dockerfile
-        filename '$WORKSPACE/Dockerfile'
+        //filename is relative to $WORKSPACE + whatever suffix is used
+        filename 'Dockerfile'
         args "--net host \
               -u 0:0 \
               --dns 192.168.1.1 \
