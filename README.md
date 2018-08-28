@@ -2,13 +2,14 @@
 
 A proof-of-concept, multi-purpose repo for testing and publishing cookbooks using Jenkins Docker containers.
 
-In it's current form, this is best suited for creating a quick and dirty, on-the-fly, cookbook pipeline.  Careful considerations should be made before porting any of this functionality to a production environment.
+In current form, this is best suited for creating a quick and dirty, on-the-fly, cookbook pipeline and works nicely as an ephemeral pipeline for local development. Careful considerations should be made before porting any of this functionality to a production environment.
 
 ## Known Issues
 
-- The setup_jenkins.sh file is heavily dependent on very specific environment variables.
-- The first run fails because something is going on with the path used to copy the libraryResource and the workspace where the initial indexing occurs  
-- Github Access Token is currently being added in chef-evaluation
+- The setup_jenkins.sh file is heavily dependent on static environment variables.
+- keys and configurations need to added to jenkins-master dir.
+- The first run fails because something is going on with the path used to copy the libraryResource and the workspace where the initial indexing occurs
+
 
 ## Jenkins Master setup files
 
@@ -16,16 +17,17 @@ In it's current form, this is best suited for creating a quick and dirty, on-the
 
 ### Usage
 
-1. Add files to the jenkins-master directory. This is the Jenkins Master Docker build context and the following files are used to build the container
+1. Add these files to the jenkins-master directory. This is the Jenkins Master Docker build context and the following files are used to build the container
   - jenkins-master/cicdsvc-knife.rb
     A knife configuration file with the appropriate configuration for your environment
   - jenkins-master/cicdsvc.pem
     A client.pem key for the user specified in the knife.rb file
-  - jenkins-master/github-token
+  - create jenkins-master/github-token file containing a valid github token
     A [Github Access Token](https://help.github.com/articles/creating-a-personal-access-token-for-the-command-line/) with repo and user email access to the cookbook repo
 
-2. Run ./jenkins-master/setup_jenkins.sh
-  - Edit setup_jenkins.sh and set Environment variables appropriately
+1. Edit setup_jenkins.sh and set Environment variables appropriately
+
+1. Run ./jenkins-master/setup_jenkins.sh  
 
 ## Jenkins Library
 
@@ -43,7 +45,10 @@ This will run the bare bones basics of a cookbook pipeline.
 
 ### Example Usage
 
-Example of the calling [Jenkinsfile](https://github.com/mtyler/chef-infra-base/blob/master/Jenkinsfile)
+Example of [setting up and running](https://github.com/mtyler/chef-evaluation)
+
+
+Example of the calling [Jenkinsfile](https://github.com/mtyler/chef-infra-base/blob/master/Jenkinsfile) from an individual cookbook.
 
 ## More Jenkins Cookbook Libraries
 
