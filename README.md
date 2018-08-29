@@ -8,7 +8,7 @@ In current form, this is best suited for creating a quick and dirty, on-the-fly,
 
 - The setup_jenkins.sh file is heavily dependent on static environment variables.
 - keys and configurations need to added to jenkins-master dir.
-- The first run fails because something is going on with the path used to copy the libraryResource and the workspace where the initial indexing occurs
+- The first run fails because something is going on with the path used to copy the libraryResource and the workspace where the initial indexing occurs.  The builder Dockerfile is copied to the workspace with the \@2 suffix.
 
 
 ## Jenkins Master setup files
@@ -43,12 +43,24 @@ This will run the bare bones basics of a cookbook pipeline.
 - ./resources/Dockerfile (Jenkins Builder)
   A Dockerfile for running a cookbook builder inside the jenkinsci/blueocean Jenkins container
 
-### Example Usage
+### Usage
 
-Example of [setting up and running](https://github.com/mtyler/chef-evaluation)
+A [bundle of bash hackery](https://github.com/mtyler/chef-evaluation) to setup Chef infrastructure with a cookbook pipeline.
 
+A [Jenkinsfile](https://github.com/mtyler/chef-infra-base/blob/master/Jenkinsfile) that dynamically imports the pipeline library.
 
-Example of the calling [Jenkinsfile](https://github.com/mtyler/chef-infra-base/blob/master/Jenkinsfile) from an individual cookbook.
+```javascript
+// Dynamically include a jenkins library
+library identifier: 'jenkins-cookbook-pipeline@master', retriever: modernSCM(
+  [$class: 'GitSCMSource',
+   remote: 'git://github.com/mtyler/jenkins-cookbook-pipeline.git'])
+
+// Call groovy method containing shared pipeline.
+// Argument should be the name of the cookbook
+node {
+  publishMaster 'chef-infra-base'
+}
+```
 
 ## More Jenkins Cookbook Libraries
 
