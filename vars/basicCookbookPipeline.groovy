@@ -6,6 +6,10 @@ def call(String cookbookName){
   // It's not clear where jenkins is getting the @2 suffix from.  Additionally,
   // this appears to fail on the first pass
   writeFile file: "${WORKSPACE}@2/Dockerfile", text: libraryResource('Dockerfile')
+  // Now we're really going into hacked up territory
+  // TODO figure out how to work with Workspace and this mystical @2 suffix
+  writeFile file: "${WORKSPACE}/Dockerfile", text: libraryResource('Dockerfile')
+
 // This pipeline assumes that human approval happens through a PR
 // to master.
 //
