@@ -27,12 +27,6 @@ def call(String cookbookName){
         script: "cat ${KNIFE_RB}",
         returnStdout: true
       ).trim()
-    // cookbook name is derived from metadata.rb and would need mod to include
-    // metadata.json
-    //  COOKBOOK_NAME= sh (
-    //    script: "sed -n -e '/^name/p' metadata.rb | sed 's/^name*//g;s/^[[:space:]]*//g' | sed \"s/'//g\"",
-    //    returnStdout: true
-    //  ).trim()
       COOKBOOK_NAME= cookbookName.trim()
       COOKBOOK_DIR= sh (
         script: "printf '%s' \"cookbooks/${COOKBOOK_NAME}\"",
@@ -51,20 +45,11 @@ def call(String cookbookName){
               -u 0:0 \
               --add-host \"\$CHEF_SERVER_ADD_HOST\" \
               -v /var/run/docker.sock:/var/run/docker.sock"
-              //filename 'Dockerfile'
-              //args "--net host \
-            //        -u 0:0 \
-              //      --dns 192.168.1.1 \
-              //      --add-host \"\$CHEF_SERVER_ADD_HOST\" \
-              //      -v /var/run/docker.sock:/var/run/docker.sock"
       }
     }
-//  options {
-//    newContainerPerStage()
-//    checkoutToSubdirectory('my-workspace')
-//  }
     triggers {
-      pollSCM('H */4 * * 1-5')
+      // poll scm every 2m
+      pollSCM('*/2 * * * *')
     }
     stages {
       stage('Prep') {
