@@ -49,7 +49,7 @@ def call(String cookbookName){
     }
     triggers {
       // poll scm every 2m
-      pollSCM('*/2 * * * *')
+      cron('H/2 * * * *')
     }
     stages {
       stage('Prep') {
