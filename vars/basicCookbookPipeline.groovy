@@ -52,8 +52,9 @@ def call(String cookbookName){
       }
     }
     triggers {
+      // Removing the cron because it is creating an "waiting for executor" error
       // poll scm every 2m
-      cron('H/2 * * * *')
+      //cron('H/2 * * * *')
     }
     stages {
       stage('Prep') {

@@ -8,7 +8,6 @@ In current form, this is best suited for creating a quick and dirty, on-the-fly,
 
 - The setup_jenkins.sh file is heavily dependent on static environment variables.
 - keys and configurations need to added to jenkins-master dir.
-- The first run fails because something is going on with the path used to copy the libraryResource and the workspace where the initial indexing occurs.  The builder Dockerfile is copied to the workspace with the \@2 suffix.
 
 
 ## Jenkins Master setup files
