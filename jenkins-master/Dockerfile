@@ -1,4 +1,4 @@
-FROM jenkinsci/blueocean
+FROM jenkinsci/blueocean:1.8.0
 # ARG values can be overridden during docker build
 # CHEF_SERVER_ADD_HOST should be the argument passed to --add-host
 # `docker run --add-host $CHEF_SERVER_ADD_HOST`
