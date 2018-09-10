@@ -4,6 +4,16 @@ A proof-of-concept, multi-purpose repo for testing and publishing cookbooks usin
 
 In current form, this is best suited for creating a quick and dirty, on-the-fly, cookbook pipeline and works nicely as an ephemeral pipeline for local development. Careful considerations should be made before porting any of this functionality to a production environment.
 
+What this does:
+1. creates a fresh jenkins install with a blueocean container
+1. installs plugins, configures and turns off the install wizard
+1. creates Admin user
+1. integrates with github repo and pulls/runs Jenkinsfile from a given cookbook repo
+1. creates a jenkins builder container (inside master) to run pipeline
+1. runs .kitchen.docker.yml (inside builder)
+1. runs cookbook validations and publishes the master branch to a Chef Server on Host network
+1. continues watching repo until destroyed
+
 ## Known Issues
 
 - The setup_jenkins.sh file is heavily dependent on static environment variables.
