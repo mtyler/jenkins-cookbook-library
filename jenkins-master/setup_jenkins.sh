@@ -88,29 +88,18 @@ EOL
 ## java -jar jenkins-cli.jar -auth admin:pwd -s http://localhost:8080/ list-credentials-as-xml user::user::admin
 ## java -jar jenkins-cli.jar -auth admin:nimda -s http://localhost:8080/ get-credentials-domain-as-xml user::user::admin blueocean-github-domain
 ##
-#create_blueocean-github-domain() {
-#    cat > $BUILD_CONTEXT/blueocean-github-domain.xml <<EOL
-#    <com.cloudbees.plugins.credentials.domains.Domain plugin="credentials@2.1.18">
-#      <name>blueocean-github-domain</name>
-#      <description>blueocean-github-domain to store credentials by BlueOcean</description>
-#      <specifications>
-#        <io.jenkins.blueocean.rest.impl.pipeline.credential.BlueOceanDomainSpecification plugin="blueocean-pipeline-scm-api@1.7.1"/>
-#      </specifications>
-#    </com.cloudbees.plugins.credentials.domains.Domain>
-#EOL
-#}
 
-#create_github-credentials() {
-#cat > $BUILD_CONTEXT/github-credentials.xml <<EOL
-#      <com.cloudbees.plugins.credentials.impl.UsernamePasswordCredentialsImpl>
-#        <scope>USER</scope>
-#        <id>github</id>
-#        <description>GitHub Access Token</description>
-#        <username>admin</username>
-#        <password>${GITHUB_TOKEN}</password>
-#      </com.cloudbees.plugins.credentials.impl.UsernamePasswordCredentialsImpl>
-#EOL
-#}
+##
+## create plugins.txt that will be used to create the master
+## this is a manual process.
+## - go to http://[Jenkins-Url]/script
+## - enable scripting and run
+## Jenkins.instance.pluginManager.plugins.each {
+##     plugin ->
+##     println ("${plugin.getShortName()}:${plugin.getVersion()}")
+## }
+## - overwrite plugins.txt with the list of plugins, 1 per line
+##   take care not to include the large blob at the bottom
 
 ##
 ## create files required for Docker build to copy to container
@@ -183,15 +172,6 @@ docker run -u root --rm -d -p 8080:8080 -p 50000:50000 \
            -v /var/run/docker.sock:/var/run/docker.sock \
            --name $CI_CONTAINER_NAME $CI_IMAGE
 
-#           echo "calling docker run..."
-#           docker run -u root --rm -d -p 8080:8080 -p 50000:50000 \
-#                      --dns 192.168.1.1 \
-#                      --add-host $CHEF_SERVER_ADD_HOST \
-#                      -v $CONTAINER_VOLUME:$JENKINS_HOME \
-#                      -v /var/run/docker.sock:/var/run/docker.sock \
-#                      --name $CI_CONTAINER_NAME $CI_IMAGE
-
-
 if [ ! $? -eq 0 ]; then
   echo ""
   echo "Error: Docker run failed"
@@ -221,54 +201,11 @@ fi
 
 while true; do
   # wait for service to be available
-  ### if [ "$(curl -v --silent http://localhost:8080 2>&1 | grep 'Authentication required')" = "Authentication required" ]; then
   if [ "$(curl -v --silent $JENKINS_URL 2>&1 | grep 'Connected to localhost')" = "Connected to localhost" ]; then
     echo "..."
     sleep 3
   else
     sleep 10
-    ## retry until jenkins-cli is available
-#    while true; do
-#      curl --fail $JENKINS_URL/jnlpJars/jenkins-cli.jar --output jenkins-cli.jar 2>&1 \
-#      && break \
-#      || echo "Download failed for jenkins-cli.jar retrying..." \
-#      && sleep 3
-#    done
-#    echo "client downloaded..."
-#sleep 3
-#    if [ "x$GITHUB_TOKEN" = "x" ]; then
-#      echo "Github Access Token is not set, blueocean pipeline will need to be created manually.
-#            Be sure to create $WKDIR/github-token with a valid token.
-#            https://github.com/settings/tokens"
-#      exit 1
-#    else
-      ## ----------------------------------------------------------------------
-      ## Begin creating a github access token
-      ## https://github.com/jenkinsci/credentials-plugin/blob/master/docs/user.adoc
-      ##
-#      echo "Creating github credentials..."
-## TODO replace these jenkins-cli commands with the blueocean rest calls
-## TODO -OR- this should be moved to the init.d.groovy script to keep things together
-##  curl -v -u admin:admin -d '{"accessToken": boo"}' -H "Content-Type:application/json" -XPUT http://localhost:8080/jenkins/blue/rest/organizations/jenkins/scm/github/validate
-## from: https://github.com/jenkinsci/blueocean-plugin/tree/master/blueocean-rest#multibranch-pipeline-api
-## curl -v -u $ADMIN_USR:$ADMIN_PWD -d '{"accessToken": "$GITHUB_TOKEN"}' -H "Content-Type:application/json" -XPUT http://localhost:8080/jenkins/blue/rest/organizations/jenkins/scm/github/validate
-
-
-#      create_github-credentials
-#      create_blueocean-github-domain
-#      java -jar ./jenkins-cli.jar -s $JENKINS_URL who-am-i --username $ADMIN_USR --password $ADMIN_PWD
-#      if [ $? -eq 0 ]; then echo "Connections successful!"; fi
-#      java -jar ./jenkins-cli.jar -auth $ADMIN_USR:$ADMIN_PWD -s $JENKINS_URL create-credentials-domain-by-xml user::user::$ADMIN_USR < $BUILD_CONTEXT/blueocean-github-domain.xml
-#      if [ $? -eq 0 ]; then echo "Domain created!"; fi
-#      java -jar ./jenkins-cli.jar -auth $ADMIN_USR:$ADMIN_PWD -s $JENKINS_URL create-credentials-by-xml user::user::$ADMIN_USR blueocean-github-domain < $BUILD_CONTEXT/github-credentials.xml
-#      if [ $? -eq 0 ]; then echo "Github Access Token added!"; fi
-
-
-      ##
-      ## End creating github access token
-      ## ----------------------------------------------------------------------
-
-#    fi
     echo "Jenkins started on $JENKINS_URL"
     echo "Startup credentials user: $ADMIN_USR pwd: $ADMIN_PWD"
     break

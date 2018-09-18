@@ -14,6 +14,8 @@ What this does:
 1. runs cookbook validations and publishes the master branch to a Chef Server on Host network
 1. continues watching repo until destroyed
 
+![alt text](./jenkins-cookbook-pipeline_arch.png)
+
 ## Known Issues
 
 - The setup_jenkins.sh file is heavily dependent on static environment variables.
